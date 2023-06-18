@@ -20,13 +20,11 @@ file /etc/docker/daemon.json (please create if it does not exist).
 
 # References
 
-https://craftinginterpreters.com/
-
-https://dev.to/narasimha1997/building-a-secure-sandboxed-environment-for-executing-untrusted-code-7e8
-
+https://craftinginterpreters.com/  
+https://dev.to/narasimha1997/building-a-secure-sandboxed-environment-for-executing-untrusted-code-7e8  
 https://www.graalvm.org/22.0/reference-manual/native-image/StaticImages/
 
 # A few helper scripts
 
-To explore docker file system from interactive shell
+To explore docker file system from interactive shell  
 docker run -it --entrypoint sh image_name:tag
