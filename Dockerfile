@@ -1,4 +1,4 @@
-FROM progrium/busybox
+FROM busybox
 
 COPY ./sandbox/sandbox /sandbox
 COPY ./jlox/jlox ./jlox
