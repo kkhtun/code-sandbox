@@ -8,6 +8,7 @@ const app = express();
 const DOCKER_CONTAINER = "sandbox:jlox";
 
 // Middlewares
+app.use(require("cors")());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
