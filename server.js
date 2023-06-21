@@ -44,8 +44,8 @@ app.post("/run", async (req, res) => {
         console.error(`[ERROR] ${e.message}`); // should contain code (exit code) and signal (that caused the termination).
         console.error(e); // should contain code (exit code) and signal (that caused the termination).
         return res.status(500).send({
-            code: e.code,
-            message: e.message,
+            code: 500,
+            message: "Internal Server Error",
         });
     }
 });
