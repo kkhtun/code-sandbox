@@ -1,3 +1,3 @@
 #!/bin/bash
-sudo cp deamon.json /etc/docker
+sudo cp daemon.json /etc/docker
 sudo systemctl restart docker
