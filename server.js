@@ -2,6 +2,7 @@
 const util = require("util");
 const exec = util.promisify(require("child_process").exec);
 
+const path = require("path");
 const express = require("express");
 const Joi = require("joi");
 const app = express();
@@ -11,6 +12,11 @@ const DOCKER_CONTAINER = "sandbox:jlox";
 app.use(require("cors")());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(express.static(__dirname + "/client/dist"));
+
+app.get("/", (req, res) => {
+    return res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+});
 
 // Register routes
 app.post("/run", async (req, res) => {
