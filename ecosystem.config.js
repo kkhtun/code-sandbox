@@ -4,7 +4,7 @@ module.exports = {
             script: "server.js",
             watch: ".",
             instances: "max",
-            max_memory_restart: "256M",
+            max_memory_restart: "512M",
             env: {
                 NODE_ENV: "development",
             },
