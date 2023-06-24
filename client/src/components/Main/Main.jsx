@@ -50,6 +50,7 @@ function Main() {
             return setError("Please provide a valid input.");
         try {
             setIsRunning(true);
+            setOutput([]);
             const response = await fetch(`${environment.url}/run`, {
                 method: "POST",
                 headers: { "content-type": "application/json" },
@@ -63,9 +64,13 @@ function Main() {
             }
             const { stderr, stdout } = data;
             if (stderr && stderr.length > 1) {
+                setError("");
+                stderr.pop();
                 return setOutput(stderr);
             }
             if (stdout && stdout.length > 1) {
+                setError("");
+                stdout.pop();
                 return setOutput(stdout);
             }
             throw new Error(ERROR.INVALID_RESPONSE);
@@ -126,38 +131,59 @@ function Main() {
                             sx={{
                                 padding: styles.spacingSm,
                                 marginBottom: styles.spacingSm,
-                                display: "flex",
                             }}
                         >
-                            <Button
-                                variant="contained"
-                                color="success"
-                                disabled={isRunning}
-                                endIcon={
-                                    isRunning ? (
-                                        <CircularProgress
-                                            size="1rem"
-                                            sx={{ color: "black" }}
-                                            px={1}
-                                        />
-                                    ) : (
-                                        <PlayArrowIcon />
-                                    )
-                                }
-                                onClick={() => onRun()}
-                            >
-                                Run
-                            </Button>
-                            {error ? (
-                                <Alert
-                                    severity="error"
-                                    sx={{ marginLeft: styles.spacingSm }}
+                            <Box sx={{ display: "flex" }}>
+                                <Button
+                                    variant="contained"
+                                    color="success"
+                                    size="large"
+                                    sx={{ height: "48px" }}
+                                    disabled={isRunning}
+                                    endIcon={
+                                        isRunning ? (
+                                            <CircularProgress
+                                                size="1rem"
+                                                sx={{ color: "black" }}
+                                                px={1}
+                                            />
+                                        ) : (
+                                            <PlayArrowIcon />
+                                        )
+                                    }
+                                    onClick={() => onRun()}
                                 >
-                                    {error}
-                                </Alert>
-                            ) : (
-                                <></>
-                            )}
+                                    Run
+                                </Button>
+                                {error ? (
+                                    <Alert
+                                        severity="error"
+                                        sx={{ marginLeft: styles.spacingSm }}
+                                    >
+                                        {error}
+                                    </Alert>
+                                ) : (
+                                    <></>
+                                )}
+                                {output && output.length > 0 ? (
+                                    <Alert
+                                        severity="success"
+                                        sx={{ marginLeft: styles.spacingSm }}
+                                    >
+                                        Completed
+                                    </Alert>
+                                ) : (
+                                    <></>
+                                )}
+                            </Box>
+                            <Typography
+                                variant="caption"
+                                mt={1}
+                                display="block"
+                            >
+                                Please provide an easy case to save CPU time,
+                                thank you 😀.
+                            </Typography>
                         </Paper>
 
                         <Paper
