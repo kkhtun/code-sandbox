@@ -17,12 +17,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(__dirname + "/client/dist"));
 
-app.get("/", (req, res) => {
+app.get("/code-sandbox", (req, res) => {
     return res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
 });
 
 // Register routes
-app.post("/run", async (req, res) => {
+app.post("/code-sandbox/run", async (req, res) => {
     const schema = Joi.object({
         code: Joi.string().required(),
     });

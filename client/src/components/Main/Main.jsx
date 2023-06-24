@@ -51,11 +51,14 @@ function Main() {
         try {
             setIsRunning(true);
             setOutput([]);
-            const response = await fetch(`${environment.url}/run`, {
-                method: "POST",
-                headers: { "content-type": "application/json" },
-                body: JSON.stringify({ code }),
-            });
+            const response = await fetch(
+                `${environment.url}/code-sandbox/run`,
+                {
+                    method: "POST",
+                    headers: { "content-type": "application/json" },
+                    body: JSON.stringify({ code }),
+                }
+            );
             const data = await response.json();
             if (!data || typeof data !== "object")
                 throw new Error(ERROR.INVALID_RESPONSE);
