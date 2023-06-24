@@ -63,6 +63,14 @@ app.post("/code-sandbox/run", async (req, res) => {
     }
 });
 
+// Error handler
+app.use((err, req, res, next) => {
+    return res.status(500).send({
+        code: 500,
+        message: "Internal Server Error",
+    });
+});
+
 // Spin up server
 (async function main() {
     const port = process.env.PORT || 3000;
@@ -73,7 +81,7 @@ app.post("/code-sandbox/run", async (req, res) => {
 
 nodeCron.schedule("*/5 * * * * *", async function removeOldContainers() {
     console.log("[CRON] Removing old containers");
-    const { stdout } = await exec("docker ps --format json");
+    const { stdout } = await exec("docker ps -a --format json");
     const containers = stdout
         .split("\n")
         .filter((data) => !!data)
