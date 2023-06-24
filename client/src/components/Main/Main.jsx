@@ -7,6 +7,7 @@ import {
     Button,
     Divider,
     Alert,
+    CircularProgress,
 } from "@mui/material";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 
@@ -29,6 +30,7 @@ function Main() {
     const [code, setCode] = useState(defaultValue);
     const [error, setError] = useState("");
     const [output, setOutput] = useState([]);
+    const [isRunning, setIsRunning] = useState(false);
 
     // Scrolling
     const scrollRef = useRef(null);
@@ -47,6 +49,7 @@ function Main() {
         if (!code || typeof code !== "string")
             return setError("Please provide a valid input.");
         try {
+            setIsRunning(true);
             const response = await fetch(`${environment.url}/run`, {
                 method: "POST",
                 headers: { "content-type": "application/json" },
@@ -55,6 +58,9 @@ function Main() {
             const data = await response.json();
             if (!data || typeof data !== "object")
                 throw new Error(ERROR.INVALID_RESPONSE);
+            if (response.status < 200 || response.status > 204) {
+                throw new Error(data.message);
+            }
             const { stderr, stdout } = data;
             if (stderr && stderr.length > 1) {
                 return setOutput(stderr);
@@ -66,6 +72,8 @@ function Main() {
         } catch (error) {
             console.error(error);
             setError(error.message);
+        } finally {
+            setIsRunning(false);
         }
     }
 
@@ -124,7 +132,18 @@ function Main() {
                             <Button
                                 variant="contained"
                                 color="success"
-                                endIcon={<PlayArrowIcon />}
+                                disabled={isRunning}
+                                endIcon={
+                                    isRunning ? (
+                                        <CircularProgress
+                                            size="1rem"
+                                            sx={{ color: "black" }}
+                                            px={1}
+                                        />
+                                    ) : (
+                                        <PlayArrowIcon />
+                                    )
+                                }
                                 onClick={() => onRun()}
                             >
                                 Run
