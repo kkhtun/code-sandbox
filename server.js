@@ -17,6 +17,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(__dirname + "/client/dist"));
 
+app.get("/", (req, res) => {
+    return res.status(200).send({ message: "Hello from Kevin's Server" });
+});
+
 app.get("/code-sandbox", (req, res) => {
     return res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
 });
